@@ -146,7 +146,7 @@
                     <li>Answer all 50 questions</li>
                     <li>Choose only one answer per question</li>
                     <li>Click "Submit Quiz" when finished</li>
-                    <li>Review your results and explanations</li>
+                    <li>Review your results and detailed explanations</li>
                 </ul>
             </div>
             <button id="startBtn" class="btn btn-custom btn-start btn-lg">Start Quiz</button>
@@ -198,91 +198,91 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Quiz Questions Data
+        // Quiz Questions Data with Elaborative Interrogation Explanations
         const quizData = [
             {
                 question: "This is a technical term that describes the layout of connections in a network.",
                 options: ["Network Topology", "Network Node", "Standalone Computer", "Workstation"],
                 correct: 0,
-                explanation: "Topology is the map of how devices connect (star, bus, ring shapes)."
+                explanation: "Topology is like a map showing how devices connect. Star = all roads meet at town center. Bus = one main highway. Ring = circular road around town."
             },
             {
                 question: "It is nothing more than two or more computers connected by a cable or by a wireless radio connection so that they can exchange information.",
                 options: ["Software", "Network", "Hard drive", "Hardware"],
                 correct: 1,
-                explanation: "A network is devices linked to share data."
+                explanation: "A network is devices linked to share data. Like neighbors sharing a water pump—no connection, no sharing."
             },
             {
                 question: "This OSI layer will determine what port to use in the process of transmission of the packet.",
                 options: ["Transport Layer", "Network Layer", "Data Link Layer", "NONE"],
                 correct: 0,
-                explanation: "Transport Layer handles ports (like port 80 for websites)."
+                explanation: "Ports are like apartment numbers. IP address finds the building (your house). Port finds the room (web browser vs email app)."
             },
             {
                 question: "Routers operate at which layer of the OSI model?",
                 options: ["Session", "Data Link", "Network", "Physical"],
                 correct: 2,
-                explanation: "Routers read IP addresses to send packets between networks."
+                explanation: "Routers are like postal workers. They read address (IP) on envelope and decide which city (network) to send it to—not what's inside."
             },
             {
                 question: "Allows computers, smartphones, or other devices to connect to the Internet or communicate with one another wirelessly within a particular area.",
                 options: ["queue", "server", "wifi", "hub"],
                 correct: 2,
-                explanation: "WiFi gives wireless internet in homes/offices without cables."
+                explanation: "WiFi is like invisible strings connecting your phone to router. No cables needed—just like walkie-talkies talking through air."
             },
             {
                 question: "Don't let the descriptor 'local' fool you. A LAN doesn't imply that a network is small. A LAN can contain hundreds or even thousands of computers. What makes a network a LAN is that all its connected computers are located within close proximity.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "LAN means location (same building), not size."
+                explanation: "LAN means same location—not small size. Example: SM Mall has 1,000+ computers but all in one building = one LAN."
             },
             {
                 question: "In a star network",
                 options: ["Each device is connected to a switch or hub", "Each device is connected in a line", "Each device connects to each other", "Each device is connected to a terminal"],
                 correct: 0,
-                explanation: "Like wheel spokes—all link to one center point."
+                explanation: "Like bicycle wheel—spokes connect to center hub. If one spoke breaks, others still work. Easy to fix one computer without stopping others."
             },
             {
                 question: "An application used to search and find information on the Internet.",
                 options: ["Web browser", "Server", "Client/Server", "NONE"],
                 correct: 0,
-                explanation: "Chrome or Firefox are browsers that search and show websites."
+                explanation: "Browser is like library helper. You ask 'where is news?', it finds websites and shows them on your screen."
             },
             {
                 question: "All types of networks",
                 options: ["have advantages", "have advantages and disadvantages", "have disadvantages", "none"],
                 correct: 1,
-                explanation: "No perfect type. Star is reliable but needs a hub; bus is cheap but breaks easily."
+                explanation: "Star: good = one broken PC won't stop others; bad = needs expensive hub. Bus: good = cheap cables; bad = one broken cable stops everyone."
             },
             {
                 question: "Every computer looking to access the Internet would be known as this.",
                 options: ["Client", "Server", "Client/Server", "NONE"],
                 correct: 0,
-                explanation: "Your laptop/phone is a client—it asks servers for websites."
+                explanation: "Client asks, server gives. Your phone (client) asks Google server: 'show cat videos.' Server sends videos back."
             },
             {
                 question: "A point at which lines or pathways intersect or branch; a central or connecting point.",
                 options: ["Data", "Packet", "Server", "Node"],
                 correct: 3,
-                explanation: "Any connected device (PC, printer) is a node."
+                explanation: "Node = any device plugged into network. Your laptop, printer, phone—all nodes. Like houses connected to one water pipe."
             },
             {
                 question: "Which of the following are transport layer protocols?",
                 options: ["SMTP", "TFTP", "IP", "TCP and UDP"],
                 correct: 3,
-                explanation: "TCP (reliable) and UDP (fast) work at Transport Layer."
+                explanation: "TCP = like registered mail (guaranteed delivery, slow). UDP = like shouting across street (fast, might not hear). Both move data between apps."
             },
             {
                 question: "It doesn't know anything about the computers that are connected to each of its ports.",
                 options: ["switch", "server", "wifi", "hub"],
                 correct: 3,
-                explanation: "Hub shouts data to all ports. Switch is smarter."
+                explanation: "Hub is dumb. Like megaphone—shouts data to everyone. Switch is smart—like postman who knows which house gets which letter."
             },
             {
                 question: "Each computer sees only those packets that were sent specifically to it, as well as packets that were specifically sent to all computers on the network.",
                 options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
                 correct: 2,
-                explanation: "Switches in star networks send data only to the right device."
+                explanation: "Switch remembers MAC addresses (like house numbers). Sends data only to right device—no noise for others."
             },
             {
                 question: "The layers of the OSI model, from the top down, are:",
@@ -293,85 +293,85 @@
                     "presentation, application, session, network, transport, data link, physical"
                 ],
                 correct: 2,
-                explanation: "Remember: 'All People Seem To Need Data Processing.'"
+                explanation: "You (user) start at top (Application). Data travels down layers like packing a gift: wrap (Presentation) → add note (Session) → box (Transport) → address label (Network) → tape (Data Link) → hand to courier (Physical)."
             },
             {
                 question: "The BUS network",
                 options: ["Relies on a backbone cable", "You can cut the cable", "Always has fantastic performance", "Can carry a million PC's"],
                 correct: 0,
-                explanation: "One main cable runs through all devices like a highway."
+                explanation: "One main cable runs through all computers—like train track. All devices connect to this track. Cut track = train stops."
             },
             {
                 question: "Bits are packaged into frames at which layer of the OSI model?",
                 options: ["Session", "Data Link", "Network", "Physical"],
                 correct: 1,
-                explanation: "Data Link Layer adds MAC addresses to make frames."
+                explanation: "This layer adds MAC address (device's fingerprint) to data—like writing 'To: John's laptop' on envelope before sending inside building."
             },
             {
                 question: "MANs are networks that are generally no more than about fifty kilometers across.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "MAN = city-sized (e.g., offices across Metro Manila)."
+                explanation: "MAN = city network. Example: connecting all barangay halls in Quezon City. Too big for LAN, too small for country-wide WAN."
             },
             {
                 question: "In a star topology, each network node is connected to a central device called",
                 options: ["queue", "server", "wifi", "hub/switch"],
                 correct: 3,
-                explanation: "All cables run to this center point."
+                explanation: "All cables meet at one point—like sun with planets orbiting. Center device manages traffic between planets."
             },
             {
                 question: "Client/server networks are a bit more complex and quite a bit more expensive than peer-to-peer networks. In a client/server network, one main computer called a server or domain controller handles network management.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Server controls files/security—better for big offices but costs more."
+                explanation: "Server is boss computer. Stores all files, controls logins. Like office manager who keeps all documents—workers (clients) ask manager for files."
             },
             {
                 question: "Packets are sent around the circle from computer to computer. Each computer looks at each packet to decide whether the packet was intended for it.",
                 options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
                 correct: 1,
-                explanation: "Data travels PC-to-PC in a loop until it reaches its target."
+                explanation: "Data travels PC→PC like bucket brigade passing water. Each PC checks: 'Is this for me?' If no, passes to next PC."
             },
             {
                 question: "In the early days of twisted-pair networking, devices known as hubs were used rather than switches. The term hub is sometimes used to refer to switches.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "People still say 'hub' by habit—but real hubs are outdated."
+                explanation: "Old habit. Early 2000s used real hubs. Now switches replaced them, but some still say 'hub' like saying 'dial phone' for mobile."
             },
             {
                 question: "A RING network",
                 options: ["Needs a diamond", "Is hard to install", "Needs a server", "Is easy to install"],
                 correct: 1,
-                explanation: "Breaking the ring stops all traffic. Adding devices is tricky."
+                explanation: "Break the ring = whole network dies. Adding new PC means stopping network to insert it—like cutting necklace chain to add bead."
             },
             {
                 question: "The resources that resides in your computer.",
                 options: ["LAN", "WAN", "local", "remote"],
                 correct: 2,
-                explanation: "Files on your PC = local. Files on another PC = remote."
+                explanation: "Local = on your own device. Like money in your wallet. Remote = on another computer—like money in bank (need network to reach it)."
             },
             {
                 question: "This layer has the function to either encrypt or decrypt the data.",
                 options: ["Transport Layer", "Network Layer", "Data Link Layer", "Presentation Layer"],
                 correct: 3,
-                explanation: "Handles encryption, compression, and data format."
+                explanation: "This layer prepares data for sending—like putting secret message in code before mailing. Receiver decodes it back."
             },
             {
                 question: "The STAR network",
                 options: ["Is expensive but reliable", "Is expensive and not worth it", "Is cheap as chips", "none"],
                 correct: 0,
-                explanation: "Needs more cable/hub—but one broken PC won't crash others."
+                explanation: "Needs more cables + hub/switch (costs money). But if one PC fails, others keep working—like Christmas lights where one bulb dies but rest stay lit."
             },
             {
                 question: "Knows which computer is connected to each of its ports.",
                 options: ["switch", "server", "wifi", "hub"],
                 correct: 0,
-                explanation: "Switch learns MAC addresses—sends data only where needed."
+                explanation: "Switch learns: 'Port 1 = Mark's laptop.' Next time data for Mark arrives, switch sends only to Port 1—not all ports."
             },
             {
                 question: "Network that covers a broad area using leased telecommunication lines.",
                 options: ["WAN", "LAN", "MAN", "NONE"],
                 correct: 0,
-                explanation: "WAN = wide area (e.g., Manila to Cebu office link)."
+                explanation: "WAN covers big areas (Manila to Cebu). Telcos own cables between cities—you 'rent' (lease) part of it to connect offices."
             },
             {
                 question: "What is a computer network?",
@@ -382,25 +382,25 @@
                     "Computers which have a cable linked to them."
                 ],
                 correct: 0,
-                explanation: "Purpose is sharing files, printers, internet—not just cables."
+                explanation: "Purpose of network is sharing—not just cables. Like family sharing one rice cooker. No sharing = just separate devices."
             },
             {
                 question: "Each computer in the network acts independently of all the other computers, but they can share data and resources such as printers with all the other computers in the network.",
                 options: ["Peer-to-Peer", "Client", "Server", "Client/Server"],
                 correct: 0,
-                explanation: "No main server. Each PC shares its own stuff (good for <10 devices)."
+                explanation: "Each PC is equal—no boss computer. Like neighbors sharing tools directly: 'Borrow my hammer?' 'Sure!' No manager needed."
             },
             {
                 question: "An Advantage of a Ring network is that:",
                 options: ["No data collisions", "Easy to install", "If one cable fails, it'll still work", "Hubs and Switches are required"],
                 correct: 0,
-                explanation: "Only one device sends at a time—packets never crash."
+                explanation: "Only one PC talks at a time—like classroom where only person with talking stick speaks. No two talking at once = no crashes."
             },
             {
                 question: "The geographic distance, not the number of computers involved, makes a network a WAN.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Two PCs 100 km apart = WAN. 1,000 PCs in one room = LAN."
+                explanation: "Two PCs 100 km apart = WAN (far apart). 1,000 PCs in one room = LAN (close together). Distance matters, not numbers."
             },
             {
                 question: "What is the role of a terminator in a bus network?",
@@ -411,91 +411,91 @@
                     "I'll be back."
                 ],
                 correct: 0,
-                explanation: "Absorbs signal at cable ends—prevents echo errors."
+                explanation: "Without terminator, signal hits cable end and bounces back—like echo in tunnel causing confusion. Terminator absorbs signal like sponge."
             },
             {
                 question: "WAN can spread across very large geographic areas.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "WAN = country/global scale (e.g., Internet, bank networks)."
+                explanation: "WAN = Wide Area Network. Example: Globe's network covers whole Philippines—many cities connected."
             },
             {
                 question: "Allows information to be delivered to other computers or electronic devices that are connected.",
                 options: ["Software", "Network", "Hard drive", "Hardware"],
                 correct: 1,
-                explanation: "Core job—moving data from one device to another."
+                explanation: "Main job of network: move data from A to B. Like postal service moving letters between houses."
             },
             {
                 question: "This physical address identifies a device to other devices on the same local network.",
                 options: ["IP Address", "MAC", "Logical Address", "NONE"],
                 correct: 1,
-                explanation: "Unique hardware ID burned into your network card."
+                explanation: "MAC is burned into network card at factory—like fingerprint. Never changes. Used inside LAN to find devices."
             },
             {
                 question: "Large computer network that spans a metropolitan area and falls between a LAN and a WAN.",
                 options: ["WAN", "LAN", "MAN", "NONE"],
                 correct: 2,
-                explanation: "MAN = city-sized (e.g., linking all QC government offices)."
+                explanation: "LAN = building. MAN = city. WAN = country/world. MAN connects offices across one city (e.g., all BPI branches in Manila)."
             },
             {
                 question: "The internet",
                 options: ["Is a type of LAN", "Is a type of WAN", "Is a type of MAN", "none of the choices"],
                 correct: 1,
-                explanation: "World's largest WAN—connects millions of LANs globally."
+                explanation: "Internet connects networks worldwide—biggest WAN. Like ocean connecting all rivers (LANs) of the world."
             },
             {
                 question: "You can set up certain computer resources — such as hard drives or printers — so that all computers on the network can access them.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Basic feature—mark a folder/printer as 'shared' for others."
+                explanation: "Network lets devices share resources. Like office with one printer—everyone sends print jobs to it through network."
             },
             {
                 question: "Every node on the network can see every packet that's sent on the cable. Each node looks at each packet to determine whether the packet is intended for it.",
                 options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
                 correct: 3,
-                explanation: "Like shouting in a room—everyone hears it, only one keeps it."
+                explanation: "One cable carries all data—like public announcement in room. Everyone hears it, but only right person responds."
             },
             {
                 question: "A computer or computer program that manages access to a centralized resource or service in a network.",
                 options: ["Data", "Packet", "Server", "Node"],
                 correct: 2,
-                explanation: "Server = main computer storing files/websites for clients."
+                explanation: "Server is main computer storing important stuff—files, emails, websites. Clients ask server: 'Give me file X.'"
             },
             {
                 question: "Peer-to-Peer networks work best with large numbers of computers.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "P2P gets messy with >10 devices. Use client/server for offices."
+                explanation: "With 50 PCs, each must remember who shares what—chaos! Like 50 neighbors lending tools without list. Server keeps organized list."
             },
             {
                 question: "Most WANs are made from...",
                 options: ["Bread", "The Internet", "Several LANs not connected together", "Several LANs connected together"],
                 correct: 3,
-                explanation: "WAN = collection of LANs linked via internet/leased lines."
+                explanation: "WAN links separate LANs. Example: Your school LAN (building) + sister school LAN (another city) connected = WAN."
             },
             {
                 question: "This address identifies the device globally.",
                 options: ["IP Address", "MAC", "Logical Address", "NONE"],
                 correct: 0,
-                explanation: "Like a house number on the Internet—used worldwide."
+                explanation: "IP = Internet address. Like house number on planet Earth. Routers use it to deliver data worldwide—MAC only works inside one building."
             },
             {
                 question: "After you hook up your personal computer (PC) to a network, it's not a 'personal' computer anymore. You're now part of a network of computers, and in a way, you've given up one of the key concepts that made PCs so successful in the first place: independence.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "You share resources and follow network rules—no longer standalone."
+                explanation: "Standalone PC = full control. Networked PC = follows rules (passwords, shared folders). Like living alone vs apartment with house rules."
             },
             {
                 question: "Computer network that connects computers within a limited area such as a home, school, computer laboratory, or office building, using network media.",
                 options: ["WAN", "LAN", "MAN", "NONE"],
                 correct: 1,
-                explanation: "LAN = Local Area Network—covers one building/campus."
+                explanation: "LAN = Local Area Network. Covers small place: home, school, office building. Like neighborhood water system serving one street."
             },
             {
                 question: "Computer that provides data to other computers. It may serve data to systems on a local area network (LAN) or a wide area network (WAN) over the Internet.",
                 options: ["queue", "server", "wifi", "hub"],
                 correct: 1,
-                explanation: "Web server gives you Facebook; file server stores office docs."
+                explanation: "Server's job: store and give data. Web server gives Facebook pages. File server gives office documents. Always waiting for requests."
             },
             {
                 question: "The STAR network",
@@ -506,13 +506,13 @@
                     "none"
                 ],
                 correct: 1,
-                explanation: "Star with switch has almost no collisions (bus has many)."
+                explanation: "Switch sends data directly to target device—like private phone call. Bus topology = group chat where everyone talks at once = collisions."
             },
             {
                 question: "The advantage of a mesh topology is that if one cable breaks, the network can use an alternative route to deliver its packets.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Multiple paths—traffic finds another way if one link fails."
+                explanation: "Mesh has many paths between devices—like city with many roads. If one road closes, traffic uses another road."
             },
             {
                 question: "What is a benefit of a STAR network?",
@@ -523,7 +523,7 @@
                     "It's reliable: If one cable/device fails, the rest work"
                 ],
                 correct: 3,
-                explanation: "Failure stays isolated—other devices keep working normally."
+                explanation: "Each PC has own cable to center. One cable breaks = only that PC offline. Others keep working—like streetlights with separate wires."
             }
         ];
 
