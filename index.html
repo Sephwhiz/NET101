@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET101 Quiz</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .quiz-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .question-card {
+            margin-bottom: 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        .question-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .option-btn {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 12px;
+            text-align: left;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+        .option-btn:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+        .option-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            font-weight: bold;
+        }
+        .explanation {
+            margin-top: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .progress-bar-custom {
+            height: 10px;
+            border-radius: 5px;
+        }
+        .btn-custom {
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+        .btn-start {
+            background: #667eea;
+            border: none;
+        }
+        .btn-submit {
+            background: #764ba2;
+            border: none;
+        }
+        .btn-restart {
+            background: #667eea;
+            border: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .result-card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="quiz-container text-center">
+            <div class="header-section">
+                <h1 class="display-4 fw-bold mb-4">NET101 Quiz</h1>
+                <p class="lead">Test your knowledge on Networking Fundamentals</p>
+            </div>
+            <div class="mb-4">
+                <h3>Instructions:</h3>
+                <ul class="text-start mx-auto" style="max-width: 500px;">
+                    <li>Answer all 50 questions</li>
+                    <li>Choose only one answer per question</li>
+                    <li>Click "Submit Quiz" when finished</li>
+                    <li>Review your results and explanations</li>
+                </ul>
+            </div>
+            <button id="startBtn" class="btn btn-custom btn-start btn-lg">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="quiz-container" style="display: none;">
+            <div class="header-section">
+                <h2 class="fw-bold">NET101 Quiz</h2>
+                <p class="text-muted">Question <span id="currentQuestion">1</span> of 50</p>
+            </div>
+
+            <div class="timer" id="timer">Time: <span id="time">00:00</span></div>
+
+            <div id="questionsContainer"></div>
+
+            <div class="text-center mt-4">
+                <button id="submitBtn" class="btn btn-custom btn-submit">Submit Quiz</button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="quiz-container" style="display: none;">
+            <div class="header-section">
+                <h2 class="fw-bold">Quiz Results</h2>
+            </div>
+
+            <div class="text-center mb-4">
+                <div class="score-display">
+                    <span id="score">0</span>/50
+                </div>
+                <p class="lead" id="resultMessage"></p>
+                <div class="progress mt-3" style="max-width: 400px; margin: 0 auto;">
+                    <div id="scoreBar" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%"></div>
+                </div>
+                <p class="mt-2"><strong>Correct:</strong> <span id="correctCount" class="text-success">0</span> | 
+                <strong>Wrong:</strong> <span id="wrongCount" class="text-danger">0</span></p>
+            </div>
+
+            <div id="resultsContainer"></div>
+
+            <div class="text-center mt-4">
+                <button id="restartBtn" class="btn btn-custom btn-restart">Take Quiz Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Quiz Questions Data
+        const quizData = [
+            {
+                question: "This is a technical term that describes the layout of connections in a network.",
+                options: ["Network Topology", "Network Node", "Standalone Computer", "Workstation"],
+                correct: 0,
+                explanation: "Topology is the map of how devices connect (star, bus, ring shapes)."
+            },
+            {
+                question: "It is nothing more than two or more computers connected by a cable or by a wireless radio connection so that they can exchange information.",
+                options: ["Software", "Network", "Hard drive", "Hardware"],
+                correct: 1,
+                explanation: "A network is devices linked to share data."
+            },
+            {
+                question: "This OSI layer will determine what port to use in the process of transmission of the packet.",
+                options: ["Transport Layer", "Network Layer", "Data Link Layer", "NONE"],
+                correct: 0,
+                explanation: "Transport Layer handles ports (like port 80 for websites)."
+            },
+            {
+                question: "Routers operate at which layer of the OSI model?",
+                options: ["Session", "Data Link", "Network", "Physical"],
+                correct: 2,
+                explanation: "Routers read IP addresses to send packets between networks."
+            },
+            {
+                question: "Allows computers, smartphones, or other devices to connect to the Internet or communicate with one another wirelessly within a particular area.",
+                options: ["queue", "server", "wifi", "hub"],
+                correct: 2,
+                explanation: "WiFi gives wireless internet in homes/offices without cables."
+            },
+            {
+                question: "Don't let the descriptor 'local' fool you. A LAN doesn't imply that a network is small. A LAN can contain hundreds or even thousands of computers. What makes a network a LAN is that all its connected computers are located within close proximity.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "LAN means location (same building), not size."
+            },
+            {
+                question: "In a star network",
+                options: ["Each device is connected to a switch or hub", "Each device is connected in a line", "Each device connects to each other", "Each device is connected to a terminal"],
+                correct: 0,
+                explanation: "Like wheel spokes—all link to one center point."
+            },
+            {
+                question: "An application used to search and find information on the Internet.",
+                options: ["Web browser", "Server", "Client/Server", "NONE"],
+                correct: 0,
+                explanation: "Chrome or Firefox are browsers that search and show websites."
+            },
+            {
+                question: "All types of networks",
+                options: ["have advantages", "have advantages and disadvantages", "have disadvantages", "none"],
+                correct: 1,
+                explanation: "No perfect type. Star is reliable but needs a hub; bus is cheap but breaks easily."
+            },
+            {
+                question: "Every computer looking to access the Internet would be known as this.",
+                options: ["Client", "Server", "Client/Server", "NONE"],
+                correct: 0,
+                explanation: "Your laptop/phone is a client—it asks servers for websites."
+            },
+            {
+                question: "A point at which lines or pathways intersect or branch; a central or connecting point.",
+                options: ["Data", "Packet", "Server", "Node"],
+                correct: 3,
+                explanation: "Any connected device (PC, printer) is a node."
+            },
+            {
+                question: "Which of the following are transport layer protocols?",
+                options: ["SMTP", "TFTP", "IP", "TCP and UDP"],
+                correct: 3,
+                explanation: "TCP (reliable) and UDP (fast) work at Transport Layer."
+            },
+            {
+                question: "It doesn't know anything about the computers that are connected to each of its ports.",
+                options: ["switch", "server", "wifi", "hub"],
+                correct: 3,
+                explanation: "Hub shouts data to all ports. Switch is smarter."
+            },
+            {
+                question: "Each computer sees only those packets that were sent specifically to it, as well as packets that were specifically sent to all computers on the network.",
+                options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
+                correct: 2,
+                explanation: "Switches in star networks send data only to the right device."
+            },
+            {
+                question: "The layers of the OSI model, from the top down, are:",
+                options: [
+                    "physical, data link, network, transport, session, presentation, application",
+                    "session, presentation, data transport, MAC, network, physical",
+                    "application, presentation, session, transport, network, data link, physical",
+                    "presentation, application, session, network, transport, data link, physical"
+                ],
+                correct: 2,
+                explanation: "Remember: 'All People Seem To Need Data Processing.'"
+            },
+            {
+                question: "The BUS network",
+                options: ["Relies on a backbone cable", "You can cut the cable", "Always has fantastic performance", "Can carry a million PC's"],
+                correct: 0,
+                explanation: "One main cable runs through all devices like a highway."
+            },
+            {
+                question: "Bits are packaged into frames at which layer of the OSI model?",
+                options: ["Session", "Data Link", "Network", "Physical"],
+                correct: 1,
+                explanation: "Data Link Layer adds MAC addresses to make frames."
+            },
+            {
+                question: "MANs are networks that are generally no more than about fifty kilometers across.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "MAN = city-sized (e.g., offices across Metro Manila)."
+            },
+            {
+                question: "In a star topology, each network node is connected to a central device called",
+                options: ["queue", "server", "wifi", "hub/switch"],
+                correct: 3,
+                explanation: "All cables run to this center point."
+            },
+            {
+                question: "Client/server networks are a bit more complex and quite a bit more expensive than peer-to-peer networks. In a client/server network, one main computer called a server or domain controller handles network management.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Server controls files/security—better for big offices but costs more."
+            },
+            {
+                question: "Packets are sent around the circle from computer to computer. Each computer looks at each packet to decide whether the packet was intended for it.",
+                options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
+                correct: 1,
+                explanation: "Data travels PC-to-PC in a loop until it reaches its target."
+            },
+            {
+                question: "In the early days of twisted-pair networking, devices known as hubs were used rather than switches. The term hub is sometimes used to refer to switches.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "People still say 'hub' by habit—but real hubs are outdated."
+            },
+            {
+                question: "A RING network",
+                options: ["Needs a diamond", "Is hard to install", "Needs a server", "Is easy to install"],
+                correct: 1,
+                explanation: "Breaking the ring stops all traffic. Adding devices is tricky."
+            },
+            {
+                question: "The resources that resides in your computer.",
+                options: ["LAN", "WAN", "local", "remote"],
+                correct: 2,
+                explanation: "Files on your PC = local. Files on another PC = remote."
+            },
+            {
+                question: "This layer has the function to either encrypt or decrypt the data.",
+                options: ["Transport Layer", "Network Layer", "Data Link Layer", "Presentation Layer"],
+                correct: 3,
+                explanation: "Handles encryption, compression, and data format."
+            },
+            {
+                question: "The STAR network",
+                options: ["Is expensive but reliable", "Is expensive and not worth it", "Is cheap as chips", "none"],
+                correct: 0,
+                explanation: "Needs more cable/hub—but one broken PC won't crash others."
+            },
+            {
+                question: "Knows which computer is connected to each of its ports.",
+                options: ["switch", "server", "wifi", "hub"],
+                correct: 0,
+                explanation: "Switch learns MAC addresses—sends data only where needed."
+            },
+            {
+                question: "Network that covers a broad area using leased telecommunication lines.",
+                options: ["WAN", "LAN", "MAN", "NONE"],
+                correct: 0,
+                explanation: "WAN = wide area (e.g., Manila to Cebu office link)."
+            },
+            {
+                question: "What is a computer network?",
+                options: [
+                    "Computers which are connected together to share resources.",
+                    "Computers which are NOT connected together.",
+                    "Computers which are friends.",
+                    "Computers which have a cable linked to them."
+                ],
+                correct: 0,
+                explanation: "Purpose is sharing files, printers, internet—not just cables."
+            },
+            {
+                question: "Each computer in the network acts independently of all the other computers, but they can share data and resources such as printers with all the other computers in the network.",
+                options: ["Peer-to-Peer", "Client", "Server", "Client/Server"],
+                correct: 0,
+                explanation: "No main server. Each PC shares its own stuff (good for <10 devices)."
+            },
+            {
+                question: "An Advantage of a Ring network is that:",
+                options: ["No data collisions", "Easy to install", "If one cable fails, it'll still work", "Hubs and Switches are required"],
+                correct: 0,
+                explanation: "Only one device sends at a time—packets never crash."
+            },
+            {
+                question: "The geographic distance, not the number of computers involved, makes a network a WAN.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Two PCs 100 km apart = WAN. 1,000 PCs in one room = LAN."
+            },
+            {
+                question: "What is the role of a terminator in a bus network?",
+                options: [
+                    "To stop signals from bouncing back along the cable.",
+                    "To end the network and stop things dropping off the end of the cable.",
+                    "To destroy Sarah Connor.",
+                    "I'll be back."
+                ],
+                correct: 0,
+                explanation: "Absorbs signal at cable ends—prevents echo errors."
+            },
+            {
+                question: "WAN can spread across very large geographic areas.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "WAN = country/global scale (e.g., Internet, bank networks)."
+            },
+            {
+                question: "Allows information to be delivered to other computers or electronic devices that are connected.",
+                options: ["Software", "Network", "Hard drive", "Hardware"],
+                correct: 1,
+                explanation: "Core job—moving data from one device to another."
+            },
+            {
+                question: "This physical address identifies a device to other devices on the same local network.",
+                options: ["IP Address", "MAC", "Logical Address", "NONE"],
+                correct: 1,
+                explanation: "Unique hardware ID burned into your network card."
+            },
+            {
+                question: "Large computer network that spans a metropolitan area and falls between a LAN and a WAN.",
+                options: ["WAN", "LAN", "MAN", "NONE"],
+                correct: 2,
+                explanation: "MAN = city-sized (e.g., linking all QC government offices)."
+            },
+            {
+                question: "The internet",
+                options: ["Is a type of LAN", "Is a type of WAN", "Is a type of MAN", "none of the choices"],
+                correct: 1,
+                explanation: "World's largest WAN—connects millions of LANs globally."
+            },
+            {
+                question: "You can set up certain computer resources — such as hard drives or printers — so that all computers on the network can access them.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Basic feature—mark a folder/printer as 'shared' for others."
+            },
+            {
+                question: "Every node on the network can see every packet that's sent on the cable. Each node looks at each packet to determine whether the packet is intended for it.",
+                options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
+                correct: 3,
+                explanation: "Like shouting in a room—everyone hears it, only one keeps it."
+            },
+            {
+                question: "A computer or computer program that manages access to a centralized resource or service in a network.",
+                options: ["Data", "Packet", "Server", "Node"],
+                correct: 2,
+                explanation: "Server = main computer storing files/websites for clients."
+            },
+            {
+                question: "Peer-to-Peer networks work best with large numbers of computers.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "P2P gets messy with >10 devices. Use client/server for offices."
+            },
+            {
+                question: "Most WANs are made from...",
+                options: ["Bread", "The Internet", "Several LANs not connected together", "Several LANs connected together"],
+                correct: 3,
+                explanation: "WAN = collection of LANs linked via internet/leased lines."
+            },
+            {
+                question: "This address identifies the device globally.",
+                options: ["IP Address", "MAC", "Logical Address", "NONE"],
+                correct: 0,
+                explanation: "Like a house number on the Internet—used worldwide."
+            },
+            {
+                question: "After you hook up your personal computer (PC) to a network, it's not a 'personal' computer anymore. You're now part of a network of computers, and in a way, you've given up one of the key concepts that made PCs so successful in the first place: independence.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "You share resources and follow network rules—no longer standalone."
+            },
+            {
+                question: "Computer network that connects computers within a limited area such as a home, school, computer laboratory, or office building, using network media.",
+                options: ["WAN", "LAN", "MAN", "NONE"],
+                correct: 1,
+                explanation: "LAN = Local Area Network—covers one building/campus."
+            },
+            {
+                question: "Computer that provides data to other computers. It may serve data to systems on a local area network (LAN) or a wide area network (WAN) over the Internet.",
+                options: ["queue", "server", "wifi", "hub"],
+                correct: 1,
+                explanation: "Web server gives you Facebook; file server stores office docs."
+            },
+            {
+                question: "The STAR network",
+                options: [
+                    "Often has many data collisions due to all the data",
+                    "is the only network with no data collisions",
+                    "none",
+                    "none"
+                ],
+                correct: 1,
+                explanation: "Star with switch has almost no collisions (bus has many)."
+            },
+            {
+                question: "The advantage of a mesh topology is that if one cable breaks, the network can use an alternative route to deliver its packets.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Multiple paths—traffic finds another way if one link fails."
+            },
+            {
+                question: "What is a benefit of a STAR network?",
+                options: [
+                    "The hub can fail",
+                    "No extra hardware is required",
+                    "It is very reliable but I don't know why",
+                    "It's reliable: If one cable/device fails, the rest work"
+                ],
+                correct: 3,
+                explanation: "Failure stays isolated—other devices keep working normally."
+            }
+        ];
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const startBtn = document.getElementById('startBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const currentQuestionEl = document.getElementById('currentQuestion');
+        const scoreEl = document.getElementById('score');
+        const correctCountEl = document.getElementById('correctCount');
+        const wrongCountEl = document.getElementById('wrongCount');
+        const scoreBar = document.getElementById('scoreBar');
+        const resultMessageEl = document.getElementById('resultMessage');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const timerEl = document.getElementById('time');
+
+        // Quiz State
+        let userAnswers = Array(50).fill(null);
+        let timer = 0;
+        let timerInterval = null;
+        let startTime = null;
+
+        // Event Listeners
+        startBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', submitQuiz);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // Start Quiz
+        function startQuiz() {
+            welcomeScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+            
+            // Reset answers
+            userAnswers = Array(50).fill(null);
+            
+            // Generate questions
+            generateQuestions();
+            
+            // Start timer
+            startTime = Date.now();
+            timer = 0;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Generate Questions
+        function generateQuestions() {
+            questionsContainer.innerHTML = '';
+            
+            quizData.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="question-number">${index + 1}</span>
+                        <h5 class="mb-0">${q.question}</h5>
+                    </div>
+                    <div class="options-container">
+                        ${q.options.map((option, i) => `
+                            <button class="option-btn" data-question="${index}" data-option="${i}">
+                                ${String.fromCharCode(65 + i)}. ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="explanation-${index}">
+                        ${q.explanation}
+                    </div>
+                `;
+                questionsContainer.appendChild(questionCard);
+            });
+
+            // Add event listeners to options
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const questionIndex = parseInt(this.getAttribute('data-question'));
+                    const optionIndex = parseInt(this.getAttribute('data-option'));
+                    
+                    // Remove selected class from all options in this question
+                    const questionBtns = document.querySelectorAll(`[data-question="${questionIndex}"]`);
+                    questionBtns.forEach(b => b.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Save answer
+                    userAnswers[questionIndex] = optionIndex;
+                });
+            });
+        }
+
+        // Update Timer
+        function updateTimer() {
+            timer++;
+            const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
+            const seconds = (timer % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${minutes}:${seconds}`;
+        }
+
+        // Submit Quiz
+        function submitQuiz() {
+            // Check if all questions are answered
+            const unanswered = userAnswers.filter(answer => answer === null).length;
+            
+            if (unanswered > 0) {
+                if (confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
+                    calculateScore();
+                }
+            } else {
+                calculateScore();
+            }
+        }
+
+        // Calculate Score
+        function calculateScore() {
+            clearInterval(timerInterval);
+            
+            let correct = 0;
+            let wrong = 0;
+            
+            // Calculate score
+            quizData.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    correct++;
+                } else if (userAnswers[index] !== null) {
+                    wrong++;
+                }
+            });
+            
+            const score = correct;
+            const percentage = (score / 50) * 100;
+            
+            // Update results screen
+            scoreEl.textContent = score;
+            correctCountEl.textContent = correct;
+            wrongCountEl.textContent = wrong;
+            scoreBar.style.width = `${percentage}%`;
+            
+            // Result message
+            if (percentage >= 90) {
+                resultMessageEl.textContent = 'Excellent! You mastered NET101!';
+                resultMessageEl.className = 'text-success fw-bold';
+            } else if (percentage >= 75) {
+                resultMessageEl.textContent = 'Great job! You have a solid understanding.';
+                resultMessageEl.className = 'text-success fw-bold';
+            } else if (percentage >= 60) {
+                resultMessageEl.textContent = 'Good effort! Review the explanations to improve.';
+                resultMessageEl.className = 'text-warning fw-bold';
+            } else {
+                resultMessageEl.textContent = 'Keep studying! Review the explanations carefully.';
+                resultMessageEl.className = 'text-danger fw-bold';
+            }
+            
+            // Show results
+            quizScreen.style.display = 'none';
+            resultsScreen.style.display = 'block';
+            
+            // Generate detailed results
+            generateResults(correct, wrong);
+        }
+
+        // Generate Results
+        function generateResults(correct, wrong) {
+            resultsContainer.innerHTML = '';
+            
+            quizData.forEach((q, index) => {
+                const isCorrect = userAnswers[index] === q.correct;
+                const userAnswer = userAnswers[index];
+                
+                const resultCard = document.createElement('div');
+                resultCard.className = 'result-card';
+                
+                let statusClass = isCorrect ? 'text-success' : 'text-danger';
+                let statusIcon = isCorrect ? '✓' : '✗';
+                let statusText = isCorrect ? 'Correct' : 'Wrong';
+                
+                resultCard.innerHTML = `
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="question-number">${index + 1}</span>
+                        <h6 class="mb-0 ${statusClass}">
+                            ${statusIcon} ${statusText}
+                        </h6>
+                    </div>
+                    <p><strong>Question:</strong> ${q.question}</p>
+                    <p><strong>Your Answer:</strong></p>
+                    <div class="mb-2">
+                        ${q.options.map((option, i) => {
+                            const isUserAnswer = i === userAnswer;
+                            const isCorrectAnswer = i === q.correct;
+                            let btnClass = '';
+                            
+                            if (isUserAnswer && isCorrect) {
+                                btnClass = 'correct';
+                            } else if (isUserAnswer && !isCorrect) {
+                                btnClass = 'wrong';
+                            } else if (isCorrectAnswer) {
+                                btnClass = 'correct';
+                            }
+                            
+                            return `
+                                <button class="option-btn ${btnClass}" disabled>
+                                    ${String.fromCharCode(65 + i)}. ${option}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="explanation show">
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(resultCard);
+            });
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            resultsScreen.style.display = 'none';
+            welcomeScreen.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
