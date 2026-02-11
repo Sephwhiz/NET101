@@ -3,750 +3,645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NET101 Quiz</title>
-    <!-- Bootstrap CSS -->
+    <title>GE ELEC 3 - Visual Arts Quiz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
+        .welcome-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 800px;
+            margin: 4rem auto;
+            text-align: center;
+        }
+        
+        .welcome-container h1 {
+            color: #667eea;
+            font-weight: 700;
+        }
+        
+        .btn-start {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: transform 0.3s;
+        }
+        
+        .btn-start:hover {
+            transform: translateY(-3px);
+        }
+        
         .quiz-container {
             background: white;
             border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .question-card {
-            margin-bottom: 25px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-        .question-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .question-number {
-            background: #667eea;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .option-btn {
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 12px;
-            text-align: left;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            background: #f8f9fa;
-            transition: all 0.3s;
-            font-size: 15px;
-        }
-        .option-btn:hover {
-            background: #e9ecef;
-            border-color: #667eea;
-        }
-        .option-btn.selected {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        .option-btn.correct {
-            background: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
-            font-weight: bold;
-        }
-        .option-btn.wrong {
-            background: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
-            font-weight: bold;
-        }
-        .explanation {
-            margin-top: 10px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            border-radius: 5px;
-            font-size: 14px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
             display: none;
         }
-        .explanation.show {
-            display: block;
-            animation: fadeIn 0.5s;
+        
+        .question-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
-        .score-display {
-            font-size: 3rem;
+        
+        .question-number {
             font-weight: bold;
             color: #667eea;
         }
-        .progress-bar-custom {
+        
+        .question-text {
+            font-weight: 600;
+            margin: 0.5rem 0 1rem 0;
+            color: #333;
+        }
+        
+        .option {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            background: #f0f4ff;
+            border-color: #667eea;
+        }
+        
+        .option.selected {
+            background: #e3e8ff;
+            border-color: #667eea;
+            font-weight: 600;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            margin-top: 2rem;
+        }
+        
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .results-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            display: none;
+        }
+        
+        .score-display {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .score-number {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+        
+        .result-card {
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        
+        .result-card.correct {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+        
+        .result-card.wrong {
+            background: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+        
+        .explanation {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid #2196f3;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .explanation-title {
+            font-weight: bold;
+            color: #2196f3;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-bar {
             height: 10px;
             border-radius: 5px;
         }
-        .btn-custom {
-            padding: 12px 30px;
-            font-size: 18px;
+        
+        .back-to-home {
+            background: #667eea;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
             border-radius: 50px;
+            margin-top: 1rem;
+        }
+        
+        .unanswered-warning {
+            color: #f44336;
             font-weight: bold;
-        }
-        .btn-start {
-            background: #667eea;
-            border: none;
-        }
-        .btn-submit {
-            background: #764ba2;
-            border: none;
-        }
-        .btn-restart {
-            background: #667eea;
-            border: none;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .result-card {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            background: #f8f9fa;
-        }
-        .header-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .timer {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 20px;
+            margin-top: 1rem;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Welcome Screen -->
-        <div id="welcomeScreen" class="quiz-container text-center">
-            <div class="header-section">
-                <h1 class="display-4 fw-bold mb-4">NET101 Quiz</h1>
-                <p class="lead">Test your knowledge on Networking Fundamentals</p>
-            </div>
-            <div class="mb-4">
-                <h3>Instructions:</h3>
-                <ul class="text-start mx-auto" style="max-width: 500px;">
-                    <li>Answer all 50 questions</li>
-                    <li>Choose only one answer per question</li>
-                    <li>Click "Submit Quiz" when finished</li>
-                    <li>Review your results and explanations</li>
-                </ul>
-            </div>
-            <button id="startBtn" class="btn btn-custom btn-start btn-lg">Start Quiz</button>
-        </div>
-
-        <!-- Quiz Screen -->
-        <div id="quizScreen" class="quiz-container" style="display: none;">
-            <div class="header-section">
-                <h2 class="fw-bold">NET101 Quiz</h2>
-                <p class="text-muted">Question <span id="currentQuestion">1</span> of 50</p>
-            </div>
-
-            <div class="timer" id="timer">Time: <span id="time">00:00</span></div>
-
-            <div id="questionsContainer"></div>
-
-            <div class="text-center mt-4">
-                <button id="submitBtn" class="btn btn-custom btn-submit">Submit Quiz</button>
-            </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div id="resultsScreen" class="quiz-container" style="display: none;">
-            <div class="header-section">
-                <h2 class="fw-bold">Quiz Results</h2>
-            </div>
-
-            <div class="text-center mb-4">
-                <div class="score-display">
-                    <span id="score">0</span>/50
-                </div>
-                <p class="lead" id="resultMessage"></p>
-                <div class="progress mt-3" style="max-width: 400px; margin: 0 auto;">
-                    <div id="scoreBar" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%"></div>
-                </div>
-                <p class="mt-2"><strong>Correct:</strong> <span id="correctCount" class="text-success">0</span> | 
-                <strong>Wrong:</strong> <span id="wrongCount" class="text-danger">0</span></p>
-            </div>
-
-            <div id="resultsContainer"></div>
-
-            <div class="text-center mt-4">
-                <button id="restartBtn" class="btn btn-custom btn-restart">Take Quiz Again</button>
-            </div>
-        </div>
+    <!-- Welcome Screen -->
+    <div class="container welcome-container" id="welcomeScreen">
+        <h1>🎨 GE ELEC 3 Quiz</h1>
+        <h2>Reading Visual Arts</h2>
+        <p class="lead">50 Questions • Simple "Why?" Explanations</p>
+        <p>All explanations use basic English and come from your module.</p>
+        <button class="btn btn-start" onclick="startQuiz()">Start Quiz</button>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <!-- Quiz Screen -->
+    <div class="container quiz-container" id="quizScreen">
+        <div class="progress-container">
+            <div class="progress">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" id="progressBar"></div>
+            </div>
+            <div class="text-center mt-2">
+                <span id="questionCount">0</span> / 50 answered
+            </div>
+        </div>
+        
+        <div id="questionsContainer"></div>
+        
+        <div class="unanswered-warning" id="unansweredWarning">
+            ⚠️ Answer all questions first!
+        </div>
+        
+        <button class="btn btn-submit" id="submitBtn" onclick="submitQuiz()">Submit Answers</button>
+    </div>
+
+    <!-- Results Screen -->
+    <div class="container results-container" id="resultsScreen">
+        <div class="score-display">
+            <h2>Your Score</h2>
+            <div class="score-number" id="finalScore">0</div>
+            <p id="scorePercentage"></p>
+        </div>
+        
+        <div id="resultsContainer"></div>
+        
+        <button class="btn back-to-home" onclick="resetQuiz()">Back to Home</button>
+    </div>
+
     <script>
-        // Quiz Questions Data
+        // 50 Questions with SIMPLE "Why?" explanations from MODULE
         const quizData = [
             {
-                question: "This is a technical term that describes the layout of connections in a network.",
-                options: ["Network Topology", "Network Node", "Standalone Computer", "Workstation"],
-                correct: 0,
-                explanation: "Topology is the map of how devices connect (star, bus, ring shapes)."
-            },
-            {
-                question: "It is nothing more than two or more computers connected by a cable or by a wireless radio connection so that they can exchange information.",
-                options: ["Software", "Network", "Hard drive", "Hardware"],
+                question: "The word 'art' comes from the Latin word:",
+                options: ["Arte", "Ars", "Artis", "Arta"],
                 correct: 1,
-                explanation: "A network is devices linked to share data."
+                explanation: "Why 'ars'? Because the module says 'ART came from the word \"ars\" which means skill.' Art is about using skill to make something."
             },
             {
-                question: "This OSI layer will determine what port to use in the process of transmission of the packet.",
-                options: ["Transport Layer", "Network Layer", "Data Link Layer", "NONE"],
-                correct: 0,
-                explanation: "Transport Layer handles ports (like port 80 for websites)."
+                question: "Webster's dictionary defines art as:",
+                options: ["Making pretty things", "The conscious use of skill and creative imagination in producing aesthetic objects", "Copying nature", "Using expensive materials"],
+                correct: 1,
+                explanation: "Why this definition? Because the module quotes Webster's dictionary directly. Art needs both skill AND imagination, not just one."
             },
             {
-                question: "Routers operate at which layer of the OSI model?",
-                options: ["Session", "Data Link", "Network", "Physical"],
+                question: "Art is uniquely tied to:",
+                options: ["Money", "Culture", "Technology", "Fame"],
+                correct: 1,
+                explanation: "Why culture? Because the module says 'Art is uniquely human and tied directly to culture. It takes the ordinary and makes it extraordinary.'"
+            },
+            {
+                question: "Which is NOT one of the three artistic categories in Module 1?",
+                options: ["Fine Art", "Popular Culture", "Digital Art", "Craft"],
                 correct: 2,
-                explanation: "Routers read IP addresses to send packets between networks."
+                explanation: "Why not digital art? Because Module 1 only lists three categories: Fine Art, Popular Culture, and Craft. Digital art fits inside these."
             },
             {
-                question: "Allows computers, smartphones, or other devices to connect to the Internet or communicate with one another wirelessly within a particular area.",
-                options: ["queue", "server", "wifi", "hub"],
+                question: "Leonardo da Vinci's 'Mona Lisa' belongs to which category?",
+                options: ["Popular Culture", "Craft", "Fine Art", "Digital Art"],
                 correct: 2,
-                explanation: "WiFi gives wireless internet in homes/offices without cables."
+                explanation: "Why Fine Art? Because the module says Fine Art includes paintings in museums like the Mona Lisa. It's part of our human artistic heritage."
             },
             {
-                question: "Don't let the descriptor 'local' fool you. A LAN doesn't imply that a network is small. A LAN can contain hundreds or even thousands of computers. What makes a network a LAN is that all its connected computers are located within close proximity.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "LAN means location (same building), not size."
-            },
-            {
-                question: "In a star network",
-                options: ["Each device is connected to a switch or hub", "Each device is connected in a line", "Each device connects to each other", "Each device is connected to a terminal"],
-                correct: 0,
-                explanation: "Like wheel spokes—all link to one center point."
-            },
-            {
-                question: "An application used to search and find information on the Internet.",
-                options: ["Web browser", "Server", "Client/Server", "NONE"],
-                correct: 0,
-                explanation: "Chrome or Firefox are browsers that search and show websites."
-            },
-            {
-                question: "All types of networks",
-                options: ["have advantages", "have advantages and disadvantages", "have disadvantages", "none"],
+                question: "Posters, TV ads, and graffiti belong to:",
+                options: ["Fine Art", "Popular Culture", "Craft", "Museum Art"],
                 correct: 1,
-                explanation: "No perfect type. Star is reliable but needs a hub; bus is cheap but breaks easily."
+                explanation: "Why Popular Culture? Because the module says this category contains 'products and images we are exposed to every day' like posters and ads."
             },
             {
-                question: "Every computer looking to access the Internet would be known as this.",
-                options: ["Client", "Server", "Client/Server", "NONE"],
-                correct: 0,
-                explanation: "Your laptop/phone is a client—it asks servers for websites."
-            },
-            {
-                question: "A point at which lines or pathways intersect or branch; a central or connecting point.",
-                options: ["Data", "Packet", "Server", "Node"],
-                correct: 3,
-                explanation: "Any connected device (PC, printer) is a node."
-            },
-            {
-                question: "Which of the following are transport layer protocols?",
-                options: ["SMTP", "TFTP", "IP", "TCP and UDP"],
-                correct: 3,
-                explanation: "TCP (reliable) and UDP (fast) work at Transport Layer."
-            },
-            {
-                question: "It doesn't know anything about the computers that are connected to each of its ports.",
-                options: ["switch", "server", "wifi", "hub"],
-                correct: 3,
-                explanation: "Hub shouts data to all ports. Switch is smarter."
-            },
-            {
-                question: "Each computer sees only those packets that were sent specifically to it, as well as packets that were specifically sent to all computers on the network.",
-                options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
+                question: "Handmade furniture and glassware are examples of:",
+                options: ["Fine Art", "Popular Culture", "Craft", "Performance Art"],
                 correct: 2,
-                explanation: "Switches in star networks send data only to the right device."
+                explanation: "Why craft? Because the module says 'Craft works are normally associated with utilitarian purposes' — things we use daily like furniture and glassware."
             },
             {
-                question: "The layers of the OSI model, from the top down, are:",
-                options: [
-                    "physical, data link, network, transport, session, presentation, application",
-                    "session, presentation, data transport, MAC, network, physical",
-                    "application, presentation, session, transport, network, data link, physical",
-                    "presentation, application, session, network, transport, data link, physical"
-                ],
+                question: "Aesthetics is the study of:",
+                options: ["Art prices", "The nature of beauty", "Art history dates", "Famous artists"],
+                correct: 1,
+                explanation: "Why beauty? Because the module says 'Aesthetics is the philosophical argument about the nature of beauty.' It's about what makes something beautiful."
+            },
+            {
+                question: "Saying art is 'good' or 'bad' based on culture is called:",
+                options: ["Personal taste", "Cultural conventions", "Art rules", "Teacher's opinion"],
+                correct: 1,
+                explanation: "Why cultural conventions? Because the module says aesthetics deals with 'ideas of art being good and bad based on specific cultural information and beliefs.'"
+            },
+            {
+                question: "Looking at art based on your feelings is:",
+                options: ["Objective perspective", "Subjective perspective", "Cultural perspective", "Historical perspective"],
+                correct: 1,
+                explanation: "Why subjective? Because the module says subjective means 'knowledge residing in the emotions and thoughts of the viewer' — your personal feelings."
+            },
+            {
+                question: "Looking at art based on its physical features is:",
+                options: ["Subjective perspective", "Objective perspective", "Emotional perspective", "Cultural perspective"],
+                correct: 1,
+                explanation: "Why objective? Because the module says objective view 'focuses on the object's physical characteristics as the main source of information.'"
+            },
+            {
+                question: "Which function of art makes dull walls come alive?",
+                options: ["Beauty", "Happiness and Hope", "Identity", "Grief and Healing"],
+                correct: 0,
+                explanation: "Why beauty? Because the module says 'Beauty makes sense to most of us' and art on walls makes 'ordinary and common' spaces feel alive."
+            },
+            {
+                question: "Art in hospitals gives patients:",
+                options: ["Medicine", "Happiness and Hope", "Food", "Sleep"],
+                correct: 1,
+                explanation: "Why happiness and hope? Because the module says paintings in hospitals give 'a sense of joy and hope' to people in difficult places."
+            },
+            {
+                question: "Art helps people understand themselves through:",
+                options: ["Identity and understanding the self", "Beauty", "Remembering", "Culture"],
+                correct: 0,
+                explanation: "Why identity? Because the module says art helps with 'struggle for identity' and can be 'a powerful tool to help us communicate and relay our confusion.'"
+            },
+            {
+                question: "Art made after World War II often showed:",
+                options: ["Happiness", "Grief and healing", "Funny jokes", "Rich people"],
+                correct: 1,
+                explanation: "Why grief and healing? Because the module says 'Many of the most poignant and humanistic products of art were made after World War II' showing human suffering."
+            },
+            {
+                question: "Rizal's monument in Luneta Park shows which function?",
+                options: ["Beauty", "Remembering and mark-making", "Happiness", "Culture"],
+                correct: 1,
+                explanation: "Why remembering? Because the module says 'The monument of Rizal in Luneta Park is one example of a type of art that helps us remember.'"
+            },
+            {
+                question: "Papier-mâché protest effigies burned in rallies show:",
+                options: ["Beauty", "Raising awareness", "Craft", "Popular culture"],
+                correct: 1,
+                explanation: "Why raising awareness? Because the module mentions 'large sculptural effigies during rallies in Manila' as activist art that raises awareness."
+            },
+            {
+                question: "Philippine regional arts (like from different islands) show:",
+                options: ["Beauty", "Culture and togetherness", "Grief", "Identity"],
+                correct: 1,
+                explanation: "Why culture and togetherness? Because the module says 'forms of art are often localized' and in the Philippines, art 'bring identity also to certain regions.'"
+            },
+            {
+                question: "In the artistic process diagram, 'HOW' means:",
+                options: ["Subject matter", "Narrative or concept", "Techniques and materials", "Artist's name"],
                 correct: 2,
-                explanation: "Remember: 'All People Seem To Need Data Processing.'"
+                explanation: "Why techniques and materials? Because the module diagram says 'How: the techniques and materials involved; the process involved.'"
             },
             {
-                question: "The BUS network",
-                options: ["Relies on a backbone cable", "You can cut the cable", "Always has fantastic performance", "Can carry a million PC's"],
+                question: "In the artistic process diagram, 'WHAT' means:",
+                options: ["Subject matter", "Techniques", "Materials", "Artist's age"],
                 correct: 0,
-                explanation: "One main cable runs through all devices like a highway."
+                explanation: "Why subject matter? Because the module diagram says 'What: the subject matter. The content of the work.'"
             },
             {
-                question: "Bits are packaged into frames at which layer of the OSI model?",
-                options: ["Session", "Data Link", "Network", "Physical"],
+                question: "In the artistic process diagram, 'WHY' means:",
+                options: ["Materials used", "Narrative behind the subject", "Artist's birthday", "Gallery location"],
                 correct: 1,
-                explanation: "Data Link Layer adds MAC addresses to make frames."
+                explanation: "Why narrative? Because the module diagram says 'Why: the narrative behind the subject matter; the concept and underlying significance.'"
             },
             {
-                question: "MANs are networks that are generally no more than about fifty kilometers across.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "MAN = city-sized (e.g., offices across Metro Manila)."
-            },
-            {
-                question: "In a star topology, each network node is connected to a central device called",
-                options: ["queue", "server", "wifi", "hub/switch"],
-                correct: 3,
-                explanation: "All cables run to this center point."
-            },
-            {
-                question: "Client/server networks are a bit more complex and quite a bit more expensive than peer-to-peer networks. In a client/server network, one main computer called a server or domain controller handles network management.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Server controls files/security—better for big offices but costs more."
-            },
-            {
-                question: "Packets are sent around the circle from computer to computer. Each computer looks at each packet to decide whether the packet was intended for it.",
-                options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
+                question: "Commercial art galleries mainly:",
+                options: ["Preserve old art", "Buy and sell artworks", "Teach art classes", "Destroy bad art"],
                 correct: 1,
-                explanation: "Data travels PC-to-PC in a loop until it reaches its target."
+                explanation: "Why buy and sell? Because the module says galleries 'focus solely on buying and selling, and, in the process, making art a commodity.'"
             },
             {
-                question: "In the early days of twisted-pair networking, devices known as hubs were used rather than switches. The term hub is sometimes used to refer to switches.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "People still say 'hub' by habit—but real hubs are outdated."
-            },
-            {
-                question: "A RING network",
-                options: ["Needs a diamond", "Is hard to install", "Needs a server", "Is easy to install"],
+                question: "Museums mainly:",
+                options: ["Sell art", "View, research, and conserve art", "Make new art", "Train artists"],
                 correct: 1,
-                explanation: "Breaking the ring stops all traffic. Adding devices is tricky."
+                explanation: "Why view/research/conserve? Because the module says museums are 'cultural repositories' for 'viewing, researching and conserving the very best examples of artistic cultural heritage.'"
             },
             {
-                question: "The resources that resides in your computer.",
-                options: ["LAN", "WAN", "local", "remote"],
+                question: "Art critics judge based on:",
+                options: ["Price only", "Intellectual, aesthetic, and cultural standards", "Artist's looks", "Social media likes"],
+                correct: 1,
+                explanation: "Why these standards? Because the module says critics 'make judgments determining good or bad art based on the intellectual, aesthetic and cultural standards they reflect.'"
+            },
+            {
+                question: "Which is NOT required to become an artist?",
+                options: ["Skill", "Wealth", "Talent", "Creativity"],
+                correct: 1,
+                explanation: "Why not wealth? Because the module lists only three requirements: Skill, Talent, and Creativity. It doesn't say you need money."
+            },
+            {
+                question: "Becoming skilled in art means:",
+                options: ["Being born talented", "Continual repetition until it becomes second nature", "Buying expensive tools", "Copying others"],
+                correct: 1,
+                explanation: "Why repetition? Because the module says 'Becoming skilled means a continual repetition of a craft or procedure until it becomes second nature.'"
+            },
+            {
+                question: "Creativity in art means:",
+                options: ["Copying perfectly", "Using only expensive materials", "Transcending traditional ways of thinking", "Following all rules"],
                 correct: 2,
-                explanation: "Files on your PC = local. Files on another PC = remote."
+                explanation: "Why transcending tradition? Because the module says creativity is 'linked to imagination and the ability to transcend traditional ways of thinking.'"
             },
             {
-                question: "This layer has the function to either encrypt or decrypt the data.",
-                options: ["Transport Layer", "Network Layer", "Data Link Layer", "Presentation Layer"],
-                correct: 3,
-                explanation: "Handles encryption, compression, and data format."
-            },
-            {
-                question: "The STAR network",
-                options: ["Is expensive but reliable", "Is expensive and not worth it", "Is cheap as chips", "none"],
-                correct: 0,
-                explanation: "Needs more cable/hub—but one broken PC won't crash others."
-            },
-            {
-                question: "Knows which computer is connected to each of its ports.",
-                options: ["switch", "server", "wifi", "hub"],
-                correct: 0,
-                explanation: "Switch learns MAC addresses—sends data only where needed."
-            },
-            {
-                question: "Network that covers a broad area using leased telecommunication lines.",
-                options: ["WAN", "LAN", "MAN", "NONE"],
-                correct: 0,
-                explanation: "WAN = wide area (e.g., Manila to Cebu office link)."
-            },
-            {
-                question: "What is a computer network?",
-                options: [
-                    "Computers which are connected together to share resources.",
-                    "Computers which are NOT connected together.",
-                    "Computers which are friends.",
-                    "Computers which have a cable linked to them."
-                ],
-                correct: 0,
-                explanation: "Purpose is sharing files, printers, internet—not just cables."
-            },
-            {
-                question: "Each computer in the network acts independently of all the other computers, but they can share data and resources such as printers with all the other computers in the network.",
-                options: ["Peer-to-Peer", "Client", "Server", "Client/Server"],
-                correct: 0,
-                explanation: "No main server. Each PC shares its own stuff (good for <10 devices)."
-            },
-            {
-                question: "An Advantage of a Ring network is that:",
-                options: ["No data collisions", "Easy to install", "If one cable fails, it'll still work", "Hubs and Switches are required"],
-                correct: 0,
-                explanation: "Only one device sends at a time—packets never crash."
-            },
-            {
-                question: "The geographic distance, not the number of computers involved, makes a network a WAN.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Two PCs 100 km apart = WAN. 1,000 PCs in one room = LAN."
-            },
-            {
-                question: "What is the role of a terminator in a bus network?",
-                options: [
-                    "To stop signals from bouncing back along the cable.",
-                    "To end the network and stop things dropping off the end of the cable.",
-                    "To destroy Sarah Connor.",
-                    "I'll be back."
-                ],
-                correct: 0,
-                explanation: "Absorbs signal at cable ends—prevents echo errors."
-            },
-            {
-                question: "WAN can spread across very large geographic areas.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "WAN = country/global scale (e.g., Internet, bank networks)."
-            },
-            {
-                question: "Allows information to be delivered to other computers or electronic devices that are connected.",
-                options: ["Software", "Network", "Hard drive", "Hardware"],
+                question: "In medieval Europe, artists learned through:",
+                options: ["YouTube videos", "Guild apprenticeships", "University degrees only", "Self-teaching with books"],
                 correct: 1,
-                explanation: "Core job—moving data from one device to another."
+                explanation: "Why guilds? Because the module says 'The Middle Ages in Europe saw the formation of guilds that included... artists' who learned through apprenticeship."
             },
             {
-                question: "This physical address identifies a device to other devices on the same local network.",
-                options: ["IP Address", "MAC", "Logical Address", "NONE"],
+                question: "A line is defined as:",
+                options: ["A flat shape", "A mark connecting space between two points", "A 3D object", "A color"],
                 correct: 1,
-                explanation: "Unique hardware ID burned into your network card."
+                explanation: "Why connecting two points? Because the module says 'A line is defined as a mark that connects the space between two points, taking any form along the way.'"
             },
             {
-                question: "Large computer network that spans a metropolitan area and falls between a LAN and a WAN.",
-                options: ["WAN", "LAN", "MAN", "NONE"],
+                question: "Lines that physically exist on paper are:",
+                options: ["Implied lines", "Actual lines", "Contour lines", "Expressive lines"],
+                correct: 1,
+                explanation: "Why actual lines? Because the module says 'Actual lines are lines that are physically present, existing as solid connections between one or more points.'"
+            },
+            {
+                question: "Curved lines that show energy are called:",
+                options: ["Straight lines", "Classic lines", "Expressive lines", "Hatch lines"],
                 correct: 2,
-                explanation: "MAN = city-sized (e.g., linking all QC government offices)."
+                explanation: "Why expressive lines? Because the module says 'Expressive lines refer to curved marks that increase the sense of dynamism of a work of art.'"
             },
             {
-                question: "The internet",
-                options: ["Is a type of LAN", "Is a type of WAN", "Is a type of MAN", "none of the choices"],
-                correct: 1,
-                explanation: "World's largest WAN—connects millions of LANs globally."
-            },
-            {
-                question: "You can set up certain computer resources — such as hard drives or printers — so that all computers on the network can access them.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Basic feature—mark a folder/printer as 'shared' for others."
-            },
-            {
-                question: "Every node on the network can see every packet that's sent on the cable. Each node looks at each packet to determine whether the packet is intended for it.",
-                options: ["Mesh Topology", "Ring Topology", "Star Topology", "Bus Topology"],
-                correct: 3,
-                explanation: "Like shouting in a room—everyone hears it, only one keeps it."
-            },
-            {
-                question: "A computer or computer program that manages access to a centralized resource or service in a network.",
-                options: ["Data", "Packet", "Server", "Node"],
+                question: "Lines that outline a shape are:",
+                options: ["Hatch lines", "Cross-hatch lines", "Contour lines", "Implied lines"],
                 correct: 2,
-                explanation: "Server = main computer storing files/websites for clients."
+                explanation: "Why contour lines? Because the module says 'The outline or contour lines create a border or path around the edge of a shape, thereby outlining and defining it.'"
             },
             {
-                question: "Peer-to-Peer networks work best with large numbers of computers.",
-                options: ["TRUE", "FALSE"],
+                question: "Short parallel lines used for shading are:",
+                options: ["Contour lines", "Expressive lines", "Hatch lines", "Actual lines"],
+                correct: 2,
+                explanation: "Why hatch lines? Because the module says 'Hatch lines are a series of short lines repeated in intervals... used to add shading and texture to surfaces.'"
+            },
+            {
+                question: "Shape is:",
+                options: ["3D with height, width, depth", "2D area defined by edges", "A color", "A texture"],
                 correct: 1,
-                explanation: "P2P gets messy with >10 devices. Use client/server for offices."
+                explanation: "Why 2D? Because the module says 'Shape refers to an area in a two-dimensional space that is defined by edges.'"
             },
             {
-                question: "Most WANs are made from...",
-                options: ["Bread", "The Internet", "Several LANs not connected together", "Several LANs connected together"],
-                correct: 3,
-                explanation: "WAN = collection of LANs linked via internet/leased lines."
+                question: "Volume is:",
+                options: ["Flat like paper", "2D only", "3D with height, width, and depth", "A line"],
+                correct: 2,
+                explanation: "Why 3D? Because the module says 'volume is three-dimensional, exhibiting height, width, and depth.'"
             },
             {
-                question: "This address identifies the device globally.",
-                options: ["IP Address", "MAC", "Logical Address", "NONE"],
-                correct: 0,
-                explanation: "Like a house number on the Internet—used worldwide."
-            },
-            {
-                question: "After you hook up your personal computer (PC) to a network, it's not a 'personal' computer anymore. You're now part of a network of computers, and in a way, you've given up one of the key concepts that made PCs so successful in the first place: independence.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "You share resources and follow network rules—no longer standalone."
-            },
-            {
-                question: "Computer network that connects computers within a limited area such as a home, school, computer laboratory, or office building, using network media.",
-                options: ["WAN", "LAN", "MAN", "NONE"],
+                question: "Form refers to:",
+                options: ["Flat shapes only", "3D shape with volume", "Colors only", "Lines only"],
                 correct: 1,
-                explanation: "LAN = Local Area Network—covers one building/campus."
+                explanation: "Why 3D shape? Because the module says 'Form-Three-dimensional shape... Form is always considered three-dimensional as it exhibits volume—or height, width, and depth.'"
             },
             {
-                question: "Computer that provides data to other computers. It may serve data to systems on a local area network (LAN) or a wide area network (WAN) over the Internet.",
-                options: ["queue", "server", "wifi", "hub"],
+                question: "Adding white to a color makes:",
+                options: ["Shades (darker)", "Tints (lighter)", "Hue", "Intensity"],
                 correct: 1,
-                explanation: "Web server gives you Facebook; file server stores office docs."
+                explanation: "Why tints? Because the module says value has 'tints (lighter tones) and shades (darker tones)' and 'In painting, shades are created by adding black to a color while tints are created by adding white.'"
             },
             {
-                question: "The STAR network",
-                options: [
-                    "Often has many data collisions due to all the data",
-                    "is the only network with no data collisions",
-                    "none",
-                    "none"
-                ],
+                question: "Adding black to a color makes:",
+                options: ["Tints (lighter)", "Shades (darker)", "Hue", "Intensity"],
                 correct: 1,
-                explanation: "Star with switch has almost no collisions (bus has many)."
+                explanation: "Why shades? Because the module says 'shades are created by adding black to a color while tints are created by adding white to a color.'"
             },
             {
-                question: "The advantage of a mesh topology is that if one cable breaks, the network can use an alternative route to deliver its packets.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Multiple paths—traffic finds another way if one link fails."
+                question: "RGB (Red, Green, Blue) is used in:",
+                options: ["Painting", "Printing", "TV/computer screens", "Crayons"],
+                correct: 2,
+                explanation: "Why screens? Because the module says 'Additive color is color created by mixing red, green, and blue lights. Television screens... use additive color.'"
             },
             {
-                question: "What is a benefit of a STAR network?",
-                options: [
-                    "The hub can fail",
-                    "No extra hardware is required",
-                    "It is very reliable but I don't know why",
-                    "It's reliable: If one cable/device fails, the rest work"
-                ],
-                correct: 3,
-                explanation: "Failure stays isolated—other devices keep working normally."
+                question: "CMYK colors are used in:",
+                options: ["TV screens", "Digital displays", "Printing", "Stage lighting"],
+                correct: 2,
+                explanation: "Why printing? Because the module says 'Subtractive color... primary colors become cyan, magenta, yellow, and black (CMYK). Common applications... can be found in printing and photography.'"
+            },
+            {
+                question: "Colors opposite on the wheel (red/green) are:",
+                options: ["Analogous", "Warm colors", "Complementary colors", "Cool colors"],
+                correct: 2,
+                explanation: "Why complementary? Because the module says 'Complementary colors can be found directly opposite each other on the color wheel' like purple/yellow, green/red, orange/blue."
+            },
+            {
+                question: "Red, orange, and yellow are:",
+                options: ["Cool colors", "Neutral colors", "Warm colors", "Dark colors"],
+                correct: 2,
+                explanation: "Why warm colors? Because the module says 'Warm colors are the hues from red through yellow, browns and tans included.'"
+            },
+            {
+                question: "Blue and green are:",
+                options: ["Warm colors", "Neutral colors", "Cool colors", "Bright colors"],
+                correct: 2,
+                explanation: "Why cool colors? Because the module says 'Cool colors... are the hues from blue green through blue violet, with most grays included.'"
+            },
+            {
+                question: "Texture you can feel with your fingers is:",
+                options: ["Visual texture", "Implied texture", "Actual texture", "Fake texture"],
+                correct: 2,
+                explanation: "Why actual texture? Because the module says 'Actual texture refers to the physical rendering or the real surface qualities we can notice by touching an object.'"
+            },
+            {
+                question: "Texture that only looks rough but is smooth is:",
+                options: ["Actual texture", "Visual texture", "Real texture", "Tactile texture"],
+                correct: 1,
+                explanation: "Why visual texture? Because the module says 'Visual texture refers to an implied sense of texture that the artist creates through the use of various artistic elements such as line, shading and color.'"
+            },
+            {
+                question: "Strong light and dark contrast technique is:",
+                options: ["Impasto", "Chiaroscuro", "Cross-hatching", "Perspective"],
+                correct: 1,
+                explanation: "Why chiaroscuro? Because the module mentions 'An example of strong and theatrical lighting is called chiaroscuro' under the Light section."
+            },
+            {
+                question: "The area occupied by an object is:",
+                options: ["Negative space", "Positive space", "Blank space", "Empty space"],
+                correct: 1,
+                explanation: "Why positive space? Because the module says 'Positive space is the area occupied by an object and/or form. It refers to the space of the defined shape, or figure.'"
+            },
+            {
+                question: "The area around and between objects is:",
+                options: ["Positive space", "Negative space", "Full space", "Object space"],
+                correct: 1,
+                explanation: "Why negative space? Because the module says 'Negative space is the area in between, around, through, or within an object. It refers to the space that exists around and between one or more shapes.'"
             }
         ];
 
-        // DOM Elements
-        const welcomeScreen = document.getElementById('welcomeScreen');
-        const quizScreen = document.getElementById('quizScreen');
-        const resultsScreen = document.getElementById('resultsScreen');
-        const startBtn = document.getElementById('startBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        const restartBtn = document.getElementById('restartBtn');
-        const questionsContainer = document.getElementById('questionsContainer');
-        const currentQuestionEl = document.getElementById('currentQuestion');
-        const scoreEl = document.getElementById('score');
-        const correctCountEl = document.getElementById('correctCount');
-        const wrongCountEl = document.getElementById('wrongCount');
-        const scoreBar = document.getElementById('scoreBar');
-        const resultMessageEl = document.getElementById('resultMessage');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const timerEl = document.getElementById('time');
+        let userAnswers = new Array(50).fill(null);
+        let score = 0;
 
-        // Quiz State
-        let userAnswers = Array(50).fill(null);
-        let timer = 0;
-        let timerInterval = null;
-        let startTime = null;
-
-        // Event Listeners
-        startBtn.addEventListener('click', startQuiz);
-        submitBtn.addEventListener('click', submitQuiz);
-        restartBtn.addEventListener('click', restartQuiz);
-
-        // Start Quiz
         function startQuiz() {
-            welcomeScreen.style.display = 'none';
-            quizScreen.style.display = 'block';
-            
-            // Reset answers
-            userAnswers = Array(50).fill(null);
-            
-            // Generate questions
-            generateQuestions();
-            
-            // Start timer
-            startTime = Date.now();
-            timer = 0;
-            clearInterval(timerInterval);
-            timerInterval = setInterval(updateTimer, 1000);
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            loadQuestions();
         }
 
-        // Generate Questions
-        function generateQuestions() {
-            questionsContainer.innerHTML = '';
+        function loadQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
             
             quizData.forEach((q, index) => {
                 const questionCard = document.createElement('div');
                 questionCard.className = 'question-card';
                 questionCard.innerHTML = `
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="question-number">${index + 1}</span>
-                        <h5 class="mb-0">${q.question}</h5>
-                    </div>
-                    <div class="options-container">
-                        ${q.options.map((option, i) => `
-                            <button class="option-btn" data-question="${index}" data-option="${i}">
-                                ${String.fromCharCode(65 + i)}. ${option}
-                            </button>
-                        `).join('')}
-                    </div>
-                    <div class="explanation" id="explanation-${index}">
-                        ${q.explanation}
+                    <div class="question-number">Q${index + 1}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q${index}" value="0" onclick="selectAnswer(${index}, 0)">
+                            A. ${q.options[0]}
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q${index}" value="1" onclick="selectAnswer(${index}, 1)">
+                            B. ${q.options[1]}
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q${index}" value="2" onclick="selectAnswer(${index}, 2)">
+                            C. ${q.options[2]}
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q${index}" value="3" onclick="selectAnswer(${index}, 3)">
+                            D. ${q.options[3]}
+                        </label>
                     </div>
                 `;
-                questionsContainer.appendChild(questionCard);
-            });
-
-            // Add event listeners to options
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const questionIndex = parseInt(this.getAttribute('data-question'));
-                    const optionIndex = parseInt(this.getAttribute('data-option'));
-                    
-                    // Remove selected class from all options in this question
-                    const questionBtns = document.querySelectorAll(`[data-question="${questionIndex}"]`);
-                    questionBtns.forEach(b => b.classList.remove('selected'));
-                    
-                    // Add selected class to clicked option
-                    this.classList.add('selected');
-                    
-                    // Save answer
-                    userAnswers[questionIndex] = optionIndex;
-                });
+                container.appendChild(questionCard);
             });
         }
 
-        // Update Timer
-        function updateTimer() {
-            timer++;
-            const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
-            const seconds = (timer % 60).toString().padStart(2, '0');
-            timerEl.textContent = `${minutes}:${seconds}`;
+        function selectAnswer(questionIndex, optionIndex) {
+            const options = document.querySelectorAll(`input[name="q${questionIndex}"]`);
+            options.forEach(opt => opt.closest('.option').classList.remove('selected'));
+            
+            const selectedOption = document.querySelector(`input[name="q${questionIndex}"][value="${optionIndex}"]`);
+            selectedOption.checked = true;
+            selectedOption.closest('.option').classList.add('selected');
+            
+            userAnswers[questionIndex] = optionIndex;
+            updateProgress();
         }
 
-        // Submit Quiz
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            document.getElementById('progressBar').style.width = `${(answeredCount / 50) * 100}%`;
+            document.getElementById('questionCount').textContent = answeredCount;
+            document.getElementById('submitBtn').disabled = answeredCount < 50;
+            if (answeredCount === 50) document.getElementById('unansweredWarning').style.display = 'none';
+        }
+
         function submitQuiz() {
-            // Check if all questions are answered
-            const unanswered = userAnswers.filter(answer => answer === null).length;
-            
-            if (unanswered > 0) {
-                if (confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
-                    calculateScore();
-                }
-            } else {
-                calculateScore();
-            }
-        }
-
-        // Calculate Score
-        function calculateScore() {
-            clearInterval(timerInterval);
-            
-            let correct = 0;
-            let wrong = 0;
-            
-            // Calculate score
-            quizData.forEach((q, index) => {
-                if (userAnswers[index] === q.correct) {
-                    correct++;
-                } else if (userAnswers[index] !== null) {
-                    wrong++;
-                }
-            });
-            
-            const score = correct;
-            const percentage = (score / 50) * 100;
-            
-            // Update results screen
-            scoreEl.textContent = score;
-            correctCountEl.textContent = correct;
-            wrongCountEl.textContent = wrong;
-            scoreBar.style.width = `${percentage}%`;
-            
-            // Result message
-            if (percentage >= 90) {
-                resultMessageEl.textContent = 'Excellent! You mastered NET101!';
-                resultMessageEl.className = 'text-success fw-bold';
-            } else if (percentage >= 75) {
-                resultMessageEl.textContent = 'Great job! You have a solid understanding.';
-                resultMessageEl.className = 'text-success fw-bold';
-            } else if (percentage >= 60) {
-                resultMessageEl.textContent = 'Good effort! Review the explanations to improve.';
-                resultMessageEl.className = 'text-warning fw-bold';
-            } else {
-                resultMessageEl.textContent = 'Keep studying! Review the explanations carefully.';
-                resultMessageEl.className = 'text-danger fw-bold';
+            if (userAnswers.includes(null)) {
+                document.getElementById('unansweredWarning').style.display = 'block';
+                return;
             }
             
-            // Show results
-            quizScreen.style.display = 'none';
-            resultsScreen.style.display = 'block';
-            
-            // Generate detailed results
-            generateResults(correct, wrong);
+            score = quizData.reduce((total, q, i) => total + (userAnswers[i] === q.correct ? 1 : 0), 0);
+            showResults();
         }
 
-        // Generate Results
-        function generateResults(correct, wrong) {
+        function showResults() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            
+            const percentage = Math.round((score / 50) * 100);
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('scorePercentage').textContent = `${score}/50 (${percentage}%)`;
+            
+            const resultsContainer = document.getElementById('resultsContainer');
             resultsContainer.innerHTML = '';
             
             quizData.forEach((q, index) => {
                 const isCorrect = userAnswers[index] === q.correct;
-                const userAnswer = userAnswers[index];
-                
                 const resultCard = document.createElement('div');
-                resultCard.className = 'result-card';
+                resultCard.className = `result-card ${isCorrect ? 'correct' : 'wrong'}`;
                 
-                let statusClass = isCorrect ? 'text-success' : 'text-danger';
-                let statusIcon = isCorrect ? '✓' : '✗';
-                let statusText = isCorrect ? 'Correct' : 'Wrong';
+                const yourAns = String.fromCharCode(65 + userAnswers[index]);
+                const correctAns = String.fromCharCode(65 + q.correct);
                 
                 resultCard.innerHTML = `
-                    <div class="d-flex align-items-center mb-2">
-                        <span class="question-number">${index + 1}</span>
-                        <h6 class="mb-0 ${statusClass}">
-                            ${statusIcon} ${statusText}
-                        </h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <strong>Q${index + 1}</strong>
+                        <span>${isCorrect ? '✓ Correct' : `✗ Wrong (You: ${yourAns})`}</span>
                     </div>
-                    <p><strong>Question:</strong> ${q.question}</p>
-                    <p><strong>Your Answer:</strong></p>
-                    <div class="mb-2">
-                        ${q.options.map((option, i) => {
-                            const isUserAnswer = i === userAnswer;
-                            const isCorrectAnswer = i === q.correct;
-                            let btnClass = '';
-                            
-                            if (isUserAnswer && isCorrect) {
-                                btnClass = 'correct';
-                            } else if (isUserAnswer && !isCorrect) {
-                                btnClass = 'wrong';
-                            } else if (isCorrectAnswer) {
-                                btnClass = 'correct';
-                            }
-                            
-                            return `
-                                <button class="option-btn ${btnClass}" disabled>
-                                    ${String.fromCharCode(65 + i)}. ${option}
-                                </button>
-                            `;
-                        }).join('')}
-                    </div>
-                    <div class="explanation show">
-                        <strong>Explanation:</strong> ${q.explanation}
+                    <p class="mb-1"><strong>${q.question}</strong></p>
+                    <p class="mb-1"><small>Your answer: ${yourAns}. ${q.options[userAnswers[index]]}</small></p>
+                    <p class="correct-answer-label mb-2">Correct: ${correctAns}. ${q.options[q.correct]}</p>
+                    <div class="explanation">
+                        <div class="explanation-title">💡 Why is this correct?</div>
+                        <p>${q.explanation}</p>
                     </div>
                 `;
-                
                 resultsContainer.appendChild(resultCard);
             });
         }
 
-        // Restart Quiz
-        function restartQuiz() {
-            resultsScreen.style.display = 'none';
-            welcomeScreen.style.display = 'block';
+        function resetQuiz() {
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('welcomeScreen').style.display = 'block';
+            userAnswers = new Array(50).fill(null);
+            score = 0;
         }
+
+        document.getElementById('submitBtn').disabled = true;
     </script>
 </body>
 </html>
